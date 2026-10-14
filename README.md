@@ -1,6 +1,6 @@
 # 健身房管理系统（Java 简单版）
 
-这是一个适合软件专业大专毕设展示的健身房管理系统示例。项目使用 JDK 自带的 `HttpServer`，没有使用 Spring Boot、数据库或 DeepSeek 聊天功能，便于理解和答辩。后端数据保存在项目下的 `data` 文件夹中。
+这是一个适合软件专业大专毕设展示的健身房管理系统示例。前端保留了简单的 HTML/CSS/JavaScript，新增的 `backend` 目录使用 Spring Boot 2.7 + MySQL，包含登录、会员、课程、签到和首页统计接口。项目没有 DeepSeek 聊天功能。
 
 ## 已完成的功能
 
@@ -11,10 +11,39 @@
 - 收支概览：简单的收入统计卡片
 - 响应式页面：电脑和手机都可以查看
 - Java 后端接口：会员、签到、课程和首页统计
+- MySQL 数据库：会员、课程、签到和管理员表
+- 登录页：演示账号 `admin`，密码 `123456`
 
 ## 运行方式
 
-推荐 Java 11 或更高版本。在项目根目录直接执行（Java 11+ 支持单文件运行）：
+## Spring Boot + MySQL 后端运行
+
+需要 JDK 8+、Maven 和 MySQL 8。先在 MySQL Workbench 或命令行执行：
+
+```sql
+CREATE DATABASE gym_system DEFAULT CHARACTER SET utf8mb4;
+```
+
+如果你的 MySQL 账号不是 `root/123456`，修改 `backend/src/main/resources/application.yml` 中的用户名和密码。然后在项目根目录运行：
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+后端地址是 `http://localhost:8081`。首次启动会自动创建数据表并写入演示管理员、会员和课程。
+
+再启动原来的前端服务（另开一个终端）：
+
+```bash
+java GymManagementServer.java
+```
+
+浏览器先打开 `http://localhost:8080/login.html`，使用 `admin / 123456` 登录。
+
+## 只有前端演示时
+
+如果暂时没有 MySQL 或 Maven，仍可在项目根目录执行：
 
 ```bash
 java GymManagementServer.java
@@ -31,15 +60,16 @@ java GymManagementServer
 
 然后打开 <http://localhost:8080>。按 `Ctrl+C` 停止服务。
 
-首次启动会自动创建 `data/members.txt` 和 `data/checkins.txt`。会员接口示例：
+Spring Boot 后端接口示例：
 
 ```text
-GET  http://localhost:8080/api/members
-POST http://localhost:8080/api/members
-GET  http://localhost:8080/api/checkins
-POST http://localhost:8080/api/checkins
-GET  http://localhost:8080/api/classes
-GET  http://localhost:8080/api/dashboard
+POST http://localhost:8081/api/auth/login
+GET  http://localhost:8081/api/members
+POST http://localhost:8081/api/members
+GET  http://localhost:8081/api/checkins
+POST http://localhost:8081/api/checkins
+GET  http://localhost:8081/api/classes
+GET  http://localhost:8081/api/dashboard
 ```
 
-浏览器直接打开 `index.html` 时仍会使用本地演示数据；通过 `java GymManagementServer.java` 打开页面时，会优先读取 Java 后端的会员数据。
+没有 MySQL 时，浏览器直接打开 `index.html` 仍可使用本地演示数据；登录和 MySQL 数据库功能需要按上面的 Spring Boot 方式启动。

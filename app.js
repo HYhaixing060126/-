@@ -12,6 +12,6 @@ $('#memberForm').addEventListener('submit',e=>{e.preventDefault();const data=new
 $('#memberTable').addEventListener('click',e=>{const i=e.target.dataset.delete;if(i!==undefined&&confirm('确定删除这位会员吗？')){members.splice(i,1);localStorage.setItem('gymMembers',JSON.stringify(members));renderMembers()}if(e.target.dataset.edit!==undefined){const m=members[e.target.dataset.edit];const next=m.status==='正常'?'即将到期':m.status==='即将到期'?'已暂停':'正常';m.status=next;localStorage.setItem('gymMembers',JSON.stringify(members));renderMembers();alert(`已将${m.name}状态改为${next}`)}});
 $('#manualCheckin').addEventListener('click',()=>{const name=prompt('请输入签到会员姓名');if(!name)return;const records=JSON.parse(localStorage.getItem('gymCheckins')||'null')||defaultCheckins;records.unshift([name,new Date().toTimeString().slice(0,5)]);localStorage.setItem('gymCheckins',JSON.stringify(records));renderCheckins();alert('签到成功！')});$('#addClass').addEventListener('click',()=>alert('课程添加功能可在后续连接数据库后继续完善。'));renderMembers();renderCheckins();
 
-// 如果页面由 Java 后端启动，则优先读取后端数据；直接双击 HTML 时仍可使用本地演示数据。
-function syncMembersFromServer(){fetch('/api/members').then(r=>r.ok?r.json():Promise.reject()).then(data=>{members=data;localStorage.setItem('gymMembers',JSON.stringify(members));renderMembers()}).catch(()=>{});} 
+// Spring Boot 后端运行在 8081；后端不可用时仍保留本地演示数据。
+function syncMembersFromServer(){fetch('http://localhost:8081/api/members',{headers:{'X-Token':localStorage.getItem('gymToken')||''}}).then(r=>r.ok?r.json():Promise.reject()).then(data=>{members=data;localStorage.setItem('gymMembers',JSON.stringify(members));renderMembers()}).catch(()=>{});} 
 syncMembersFromServer();
