@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>活力空间 · 健身房管理系统</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><span class="brand-mark">✦</span><div><strong>活力空间</strong><small>GYM MANAGEMENT</small></div></div>
+      <nav>
+        <button class="nav-item active" data-page="dashboard"><span>⌂</span> 工作台</button>
+        <button class="nav-item" data-page="members"><span>♙</span> 会员管理</button>
+        <button class="nav-item" data-page="classes"><span>◈</span> 课程管理</button>
+        <button class="nav-item" data-page="checkin"><span>✓</span> 签到记录</button>
+        <button class="nav-item" data-page="finance"><span>▣</span> 收支统计</button>
+      </nav>
+      <div class="sidebar-bottom"><div class="help-card"><b>需要帮助？</b><p>查看系统使用手册</p><button>打开手册 →</button></div><div class="profile"><div class="avatar">管</div><div><b>管理员</b><small>超级管理员</small></div><span>⋮</span></div></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><button class="menu-button" id="menuButton">☰</button><div class="crumb"><span>管理中心</span><b>/</b><strong id="pageTitle">工作台</strong></div><div class="top-actions"><button class="icon-button">⌕</button><button class="icon-button notice">♧<i></i></button><div class="top-date">2024年06月24日　☀ 26°C</div></div></header>
+      <section class="content">
+        <div class="welcome"><div><p class="eyebrow">MONDAY, JUNE 24, 2024</p><h1>早上好，管理员 <span>👋</span></h1><p>今天也要保持活力，查看一下健身房的运营情况吧。</p></div><button class="primary" id="quickAdd">＋ 添加会员</button></div>
+
+        <div id="dashboardPage" class="page active-page">
+          <div class="stats"><div class="stat-card blue"><div class="stat-icon">♙</div><p>会员总数</p><h2 id="memberCount">1,286</h2><span>↗ <b>12.5%</b> <em>较上月</em></span></div><div class="stat-card orange"><div class="stat-icon">✓</div><p>今日签到</p><h2 id="checkinCount">86</h2><span>↗ <b>8.2%</b> <em>较昨日</em></span></div><div class="stat-card purple"><div class="stat-icon">￥</div><p>本月收入</p><h2>¥ 68,420</h2><span>↗ <b>15.8%</b> <em>较上月</em></span></div><div class="stat-card green"><div class="stat-icon">◈</div><p>课程数量</p><h2>24</h2><span>↗ <b>4.3%</b> <em>较上月</em></span></div></div>
+          <div class="grid-two"><div class="panel chart-panel"><div class="panel-head"><div><h3>收入趋势</h3><p>近 7 日收入情况</p></div><select><option>近 7 天</option><option>近 30 天</option></select></div><div class="chart"><div class="y-labels"><span>¥12k</span><span>¥8k</span><span>¥4k</span><span>¥0</span></div><div class="chart-area"><div class="grid-lines"><i></i><i></i><i></i><i></i></div><svg viewBox="0 0 700 220" preserveAspectRatio="none"><defs><linearGradient id="area" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#5c72ff" stop-opacity=".28"/><stop offset="1" stop-color="#5c72ff" stop-opacity="0"/></linearGradient></defs><path d="M0,175 C55,166 70,140 112,148 S160,183 210,150 S260,78 315,110 S370,157 420,126 S465,63 520,93 S580,120 630,61 S670,70 700,35 L700,220 L0,220Z" fill="url(#area)"/><path d="M0,175 C55,166 70,140 112,148 S160,183 210,150 S260,78 315,110 S370,157 420,126 S465,63 520,93 S580,120 630,61 S670,70 700,35" fill="none" stroke="#596eff" stroke-width="4" stroke-linecap="round"/></svg><div class="x-labels"><span>06/18</span><span>06/19</span><span>06/20</span><span>06/21</span><span>06/22</span><span>06/23</span><span>06/24</span></div></div></div></div><div class="panel"><div class="panel-head"><div><h3>今日课程</h3><p>共 8 节课程安排</p></div><button class="text-button" data-page-link="classes">查看全部 →</button></div><div class="class-list"><div class="class-row"><div class="class-time">09:00<small>AM</small></div><div class="class-color c1"></div><div class="class-info"><b>瑜伽基础</b><small>李教练 · 12/20人</small></div><span class="tag blue-tag">进行中</span></div><div class="class-row"><div class="class-time">11:30<small>AM</small></div><div class="class-color c2"></div><div class="class-info"><b>力量训练</b><small>王教练 · 8/15人</small></div><span class="tag gray-tag">未开始</span></div><div class="class-row"><div class="class-time">14:00<small>PM</small></div><div class="class-color c3"></div><div class="class-info"><b>动感单车</b><small>张教练 · 18/20人</small></div><span class="tag gray-tag">未开始</span></div><div class="class-row"><div class="class-time">19:30<small>PM</small></div><div class="class-color c4"></div><div class="class-info"><b>普拉提塑形</b><small>陈教练 · 6/12人</small></div><span class="tag gray-tag">未开始</span></div></div></div></div>
+          <div class="grid-two bottom-grid"><div class="panel"><div class="panel-head"><div><h3>最新会员</h3><p>最近加入的会员信息</p></div><button class="text-button" data-page-link="members">管理会员 →</button></div><div class="table-wrap"><table><thead><tr><th>会员</th><th>会员卡</th><th>加入日期</th><th>状态</th></tr></thead><tbody id="recentMembers"></tbody></table></div></div><div class="panel check-panel"><div class="panel-head"><div><h3>今日签到</h3><p>实时签到动态</p></div><button class="text-button" data-page-link="checkin">查看全部 →</button></div><div class="check-summary"><div class="donut"><b id="percent">72%</b><small>完成率</small></div><div><b>86 <small>/ 120</small></b><p>今日签到人数</p><span class="positive">↑ 比昨日多 8 人</span></div></div></div></div>
+        </div>
+
+        <div id="membersPage" class="page"><div class="page-head"><div><h2>会员管理</h2><p>维护会员资料和会员卡状态</p></div><button class="primary" id="addMember">＋ 添加会员</button></div><div class="toolbar"><div class="search"><span>⌕</span><input id="memberSearch" placeholder="搜索姓名或手机号"></div><select id="statusFilter"><option value="all">全部状态</option><option value="正常">正常</option><option value="即将到期">即将到期</option><option value="已暂停">已暂停</option></select></div><div class="panel table-panel"><table><thead><tr><th>会员</th><th>手机号</th><th>会员卡</th><th>到期日期</th><th>状态</th><th>操作</th></tr></thead><tbody id="memberTable"></tbody></table></div></div>
+        <div id="classesPage" class="page"><div class="page-head"><div><h2>课程管理</h2><p>安排课程、教练和报名人数</p></div><button class="primary" id="addClass">＋ 添加课程</button></div><div class="class-cards"><div class="course-card course-blue"><span>瑜伽 · YOGA</span><h3>瑜伽基础</h3><p>每周一、三、五 09:00</p><div><b>李教练</b><small>12 / 20 人</small></div></div><div class="course-card course-purple"><span>力量 · POWER</span><h3>力量训练</h3><p>每周二、四 11:30</p><div><b>王教练</b><small>8 / 15 人</small></div></div><div class="course-card course-orange"><span>有氧 · CARDIO</span><h3>动感单车</h3><p>每天 14:00、19:00</p><div><b>张教练</b><small>18 / 20 人</small></div></div></div></div>
+        <div id="checkinPage" class="page"><div class="page-head"><div><h2>签到记录</h2><p>记录会员每日到店情况</p></div><button class="primary" id="manualCheckin">＋ 手动签到</button></div><div class="checkin-cards"><div class="mini-card"><span>今日签到</span><b id="checkinBig">86</b><small>人次</small></div><div class="mini-card"><span>本周签到</span><b>542</b><small>人次</small></div><div class="mini-card"><span>平均到店</span><b>4.2</b><small>次 / 周</small></div></div><div class="panel table-panel"><div class="panel-head"><div><h3>今日签到明细</h3><p>最新签到记录会显示在这里</p></div></div><table><thead><tr><th>会员</th><th>签到时间</th><th>入场方式</th><th>状态</th></tr></thead><tbody id="checkinTable"></tbody></table></div></div>
+        <div id="financePage" class="page"><div class="page-head"><div><h2>收支统计</h2><p>查看健身房收入和经营情况</p></div><button class="outline">导出报表</button></div><div class="finance-grid"><div class="finance-box"><span>本月总收入</span><b>¥ 68,420</b><small class="positive">↑ 15.8% 较上月</small></div><div class="finance-box"><span>会员卡收入</span><b>¥ 52,800</b><small>占总收入 77.2%</small></div><div class="finance-box"><span>私教课程收入</span><b>¥ 15,620</b><small>占总收入 22.8%</small></div></div><div class="panel finance-note"><h3>本月经营提示</h3><p>会员卡续费率比上月提高 6.4%，可以继续通过课程体验和签到奖励维护会员活跃度。</p></div></div>
+      </section>
+    </main>
+  </div>
+  <div class="modal" id="memberModal"><div class="modal-box"><button class="close" id="closeModal">×</button><h2>添加会员</h2><p>填写会员基本资料，保存后会出现在会员列表。</p><form id="memberForm"><label>姓名<input name="name" required placeholder="请输入姓名"></label><label>手机号<input name="phone" required placeholder="请输入手机号"></label><label>会员卡<select name="card"><option>月卡</option><option>季卡</option><option>年卡</option></select></label><div class="form-actions"><button type="button" class="outline" id="cancelModal">取消</button><button class="primary">保存会员</button></div></form></div></div>
+  <script src="app.js"></script>
+</body>
+</html>
