@@ -25,3 +25,10 @@ $('#classesPage .class-cards').addEventListener('click',async e=>{const del=e.ta
 syncMembersFromServer();
 syncDashboardFromServer();
 syncClassesFromServer();
+
+// 让管理员页面显示真实日期，并实时同步新注册会员和签到记录。
+const dateLabel=$('.top-date');
+if(dateLabel){const now=new Date();dateLabel.textContent=new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit'}).format(now)+'　☀ 26°C';}
+function syncCheckinsFromServer(){fetch(API_BASE+'/checkins',{headers:apiHeaders()}).then(r=>r.ok?r.json():Promise.reject()).then(list=>{$('#checkinTable').innerHTML=list.map(r=>`<tr><td><div class="member-cell">${avatar(r.name)}${r.name}</div></td><td>${r.time}</td><td>会员卡</td><td>${status('正常')}</td></tr>`).join('')||'<tr><td colspan="4" style="text-align:center;color:#aab1bd;padding:30px">暂无签到记录</td></tr>';$('#checkinBig').textContent=list.length;}).catch(()=>{});}
+syncCheckinsFromServer();
+setInterval(()=>{syncMembersFromServer();syncDashboardFromServer();syncCheckinsFromServer();},5000);

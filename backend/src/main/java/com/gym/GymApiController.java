@@ -17,15 +17,42 @@ public class GymApiController {
 
     @PostMapping("/auth/login")
     public Map<String,Object> login(@RequestBody Map<String,String> body) {
-        List<Map<String,Object>> rows = db.queryForList("select id,username,password,real_name,role from sys_user where username=?", body.get("username"));
+        List<Map<String,Object>> rows = db.queryForList("select u.id,u.username,u.password,u.real_name,u.role,u.member_id,u.balance,m.card_type,m.expire_date from sys_user u left join member m on m.id=u.member_id where u.username=?", body.get("username"));
         if (rows.isEmpty() || !rows.get(0).get("password").toString().equals(body.get("password"))) throw new IllegalArgumentException("用户名或密码错误");
         Map<String,Object> user = new HashMap<>(rows.get(0)); user.remove("password"); String token = UUID.randomUUID().toString(); sessions.put(token,user);
         Map<String,Object> result = new HashMap<>(); result.put("token",token); result.put("user",user); return result;
     }
+    @PostMapping("/auth/register")
+    public Map<String,Object> register(@RequestBody Map<String,String> body) {
+        String username = value(body, "username");
+        String password = value(body, "password");
+        String realName = value(body, "realName");
+        String phone = value(body, "phone");
+        if (username.length() < 3 || password.length() < 6 || realName.isEmpty() || phone.isEmpty()) {
+            throw new IllegalArgumentException("请完整填写资料，账号至少3位，密码至少6位");
+        }
+        if (db.queryForObject("select count(*) from sys_user where username=?", Integer.class, username) > 0) {
+            throw new IllegalArgumentException("该账号已经存在");
+        }
+        db.update("insert into member(name,phone,card_type,expire_date,status) values(?,?,?,date_add(curdate(), interval 30 day),'正常')", realName, phone, "月卡");
+        Long memberId = db.queryForObject("select id from member where phone=? order by id desc limit 1", Long.class, phone);
+        db.update("insert into sys_user(username,password,real_name,role,member_id,balance) values(?,?,?,?,?,?)", username, password, realName, "普通用户", memberId, 50.00);
+        Map<String,Object> result = ok(); result.put("message", "注册成功，账户已到账 50 元"); return result;
+    }
+    @PostMapping("/auth/upgrade")
+    public Map<String,Object> upgrade(@RequestHeader(value="X-Token", required=false) String token) {
+        Map<String,Object> user = requireSession(token);
+        Long memberId = user.get("member_id") == null ? null : ((Number) user.get("member_id")).longValue();
+        if (memberId == null) throw new IllegalArgumentException("演示账号不能升级，请使用注册账号");
+        db.update("update sys_user set role='VIP会员',balance=0 where id=?", user.get("id"));
+        db.update("update member set card_type='VIP月卡',expire_date=date_add(curdate(), interval 30 day) where id=?", memberId);
+        user.put("role", "VIP会员"); user.put("balance", 0.00);
+        Map<String,Object> result = ok(); result.put("user", user); result.put("message", "升级成功，账户余额已归零"); return result;
+    }
     @PostMapping("/auth/logout") public Map<String,Object> logout(@RequestHeader(value="X-Token", required=false) String token){if(token!=null)sessions.remove(token);return ok();}
     @GetMapping("/auth/me") public Map<String,Object> me(@RequestHeader("X-Token") String token){Map<String,Object> u=sessions.get(token);if(u==null)throw new IllegalArgumentException("登录已过期");return u;}
 
-    @GetMapping("/members") public List<Map<String,Object>> members(){return db.queryForList("select id,name,phone,card_type card,date_format(expire_date,'%Y-%m-%d') date,status from member order by id desc");}
+    @GetMapping("/members") public List<Map<String,Object>> members(){return db.queryForList("select id,name,phone,card_type card,date_format(created_at,'%Y-%m-%d') date,date_format(expire_date,'%Y-%m-%d') expireDate,status from member order by id desc");}
     @PostMapping("/members") public Map<String,Object> addMember(@RequestBody Map<String,Object> b){db.update("insert into member(name,phone,card_type,expire_date,status) values(?,?,?,?,?)",b.get("name"),b.get("phone"),b.get("card"),b.get("date"),"正常");return ok();}
     @PutMapping("/members/{id}") public Map<String,Object> updateMember(@PathVariable Long id,@RequestBody Map<String,Object> b){db.update("update member set name=?,phone=?,card_type=?,expire_date=?,status=? where id=?",b.get("name"),b.get("phone"),b.get("card"),b.get("date"),b.get("status"),id);return ok();}
     @DeleteMapping("/members/{id}") public Map<String,Object> deleteMember(@PathVariable Long id){db.update("delete from member where id=?",id);return ok();}
@@ -33,8 +60,10 @@ public class GymApiController {
     @PostMapping("/classes") public Map<String,Object> addClass(@RequestBody Map<String,Object> b){db.update("insert into gym_class(name,coach,class_time,capacity,current_count) values(?,?,?,?,0)",b.get("name"),b.get("coach"),b.get("time"),b.get("capacity"));return ok();}
     @PutMapping("/classes/{id}") public Map<String,Object> updateClass(@PathVariable Long id,@RequestBody Map<String,Object> b){db.update("update gym_class set name=?,coach=?,class_time=?,capacity=? where id=?",b.get("name"),b.get("coach"),b.get("time"),b.get("capacity"),id);return ok();}
     @DeleteMapping("/classes/{id}") public Map<String,Object> deleteClass(@PathVariable Long id){db.update("delete from gym_class where id=?",id);return ok();}
-    @GetMapping("/checkins") public List<Map<String,Object>> checkins(){return db.queryForList("select c.id,m.name,date_format(c.checkin_time,'%H:%i') time from checkin c join member m on m.id=c.member_id order by c.id desc");}
+    @GetMapping("/checkins") public List<Map<String,Object>> checkins(){return db.queryForList("select c.id,m.name,date_format(c.checkin_time,'%Y-%m-%d %H:%i') time from checkin c join member m on m.id=c.member_id order by c.id desc");}
     @PostMapping("/checkins") public Map<String,Object> checkin(@RequestBody Map<String,Object> b){db.update("insert into checkin(member_id) values(?)",b.get("memberId"));return ok();}
     @GetMapping("/dashboard") public Map<String,Object> dashboard(){Map<String,Object> r=new HashMap<>();r.put("memberCount",db.queryForObject("select count(*) from member",Integer.class));r.put("todayCheckins",db.queryForObject("select count(*) from checkin where date(checkin_time)=curdate()",Integer.class));r.put("classCount",db.queryForObject("select count(*) from gym_class",Integer.class));r.put("monthIncome",68420);return r;}
+    private Map<String,Object> requireSession(String token){Map<String,Object> user=token==null?null:sessions.get(token);if(user==null)throw new IllegalArgumentException("登录已过期，请重新登录");return user;}
+    private String value(Map<String,String> body,String key){return body.get(key)==null?"":body.get(key).trim();}
     private Map<String,Object> ok(){Map<String,Object> r=new HashMap<>();r.put("success",true);return r;}
 }
