@@ -1,3 +1,5 @@
+const currentUser=JSON.parse(localStorage.getItem('gymUser')||'null');
+if(!localStorage.getItem('gymToken')||!currentUser||String(currentUser.username||'').toLowerCase()!=='admin') location.replace('login.html');
 const defaultMembers=[{name:'张小雨',phone:'138****1024',card:'年卡',date:'2025-06-24',status:'正常',color:'blue'},{name:'李明远',phone:'139****2251',card:'季卡',date:'2024-07-02',status:'即将到期',color:'purple'},{name:'王思琪',phone:'186****7789',card:'月卡',date:'2024-07-18',status:'正常',color:'orange'},{name:'赵子豪',phone:'155****4302',card:'年卡',date:'2025-01-30',status:'已暂停',color:'green'},{name:'陈雨欣',phone:'136****6520',card:'季卡',date:'2024-08-09',status:'正常',color:'pink'}];
 const defaultCheckins=[['张小雨','08:32'],['李明远','08:45'],['王思琪','09:12'],['赵子豪','09:27'],['陈雨欣','10:06']];
 let members=JSON.parse(localStorage.getItem('gymMembers')||'null')||defaultMembers;

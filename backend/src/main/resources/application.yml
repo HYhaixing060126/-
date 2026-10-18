@@ -1,6 +1,11 @@
 server:
   port: 8081
 spring:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   datasource:
     url: jdbc:mysql://localhost:3306/gym_system?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&serverTimezone=Asia/Shanghai
     username: root
@@ -8,6 +13,7 @@ spring:
   sql:
     init:
       mode: always
+      encoding: UTF-8
       schema-locations: classpath:schema.sql
   jackson:
     default-property-inclusion: non_null
