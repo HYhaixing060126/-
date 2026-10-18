@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS checkin (
   CONSTRAINT fk_checkin_member FOREIGN KEY (member_id) REFERENCES member(id)
 );
 INSERT IGNORE INTO sys_user(id,username,password,real_name,role) VALUES (1,'admin','123456','管理员','超级管理员');
+INSERT IGNORE INTO sys_user(id,username,password,real_name,role) VALUES (2,'member','123456','普通会员','普通用户');
+INSERT IGNORE INTO sys_user(id,username,password,real_name,role) VALUES (3,'vip','123456','尊贵会员','VIP会员');
 INSERT IGNORE INTO member(id,name,phone,card_type,expire_date,status) VALUES
  (1,'张小雨','13800001024','年卡','2025-06-24','正常'),(2,'李明远','13900002251','季卡','2026-07-02','即将到期');
 INSERT IGNORE INTO gym_class(id,name,coach,class_time,capacity,current_count) VALUES
