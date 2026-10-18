@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>活力空间 · 健身房管理系统</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin-overrides.css">
 </head>
 <body>
   <div class="layout">
@@ -17,10 +18,10 @@
         <button class="nav-item" data-page="checkin"><span>✓</span> 签到记录</button>
         <button class="nav-item" data-page="finance"><span>▣</span> 收支统计</button>
       </nav>
-      <div class="sidebar-bottom"><div class="help-card"><b>需要帮助？</b><p>查看系统使用手册</p><button>打开手册 →</button></div><div class="profile"><div class="avatar">管</div><div><b>管理员</b><small>超级管理员</small></div><span>⋮</span></div></div>
+      <div class="sidebar-bottom"><div class="help-card"><b>需要帮助？</b><p>查看系统使用手册</p><button onclick="location.href='README.md'">打开手册 →</button></div><div class="profile"><div class="avatar">管</div><div><b>管理员</b><small>超级管理员</small></div><button id="adminLogout" class="logout-button">退出登录</button></div></div>
     </aside>
     <main class="main">
-      <header class="topbar"><button class="menu-button" id="menuButton">☰</button><div class="crumb"><span>管理中心</span><b>/</b><strong id="pageTitle">工作台</strong></div><div class="top-actions"><button class="icon-button">⌕</button><button class="icon-button notice">♧<i></i></button><div class="top-date">2024年06月24日　☀ 26°C</div></div></header>
+      <header class="topbar"><button class="menu-button" id="menuButton">☰</button><div class="crumb"><span>管理中心</span><b>/</b><strong id="pageTitle">工作台</strong></div><div class="top-actions"><div class="top-date">2024年06月24日　☀ 26°C</div></div></header>
       <section class="content">
         <div class="welcome"><div><p class="eyebrow">MONDAY, JUNE 24, 2024</p><h1>早上好，管理员 <span>👋</span></h1><p>今天也要保持活力，查看一下健身房的运营情况吧。</p></div><button class="primary" id="quickAdd">＋ 添加会员</button></div>
 
@@ -33,7 +34,7 @@
         <div id="membersPage" class="page"><div class="page-head"><div><h2>会员管理</h2><p>维护会员资料和会员卡状态</p></div><button class="primary" id="addMember">＋ 添加会员</button></div><div class="toolbar"><div class="search"><span>⌕</span><input id="memberSearch" placeholder="搜索姓名或手机号"></div><select id="statusFilter"><option value="all">全部状态</option><option value="正常">正常</option><option value="即将到期">即将到期</option><option value="已暂停">已暂停</option></select></div><div class="panel table-panel"><table><thead><tr><th>会员</th><th>手机号</th><th>会员卡</th><th>到期日期</th><th>状态</th><th>操作</th></tr></thead><tbody id="memberTable"></tbody></table></div></div>
         <div id="classesPage" class="page"><div class="page-head"><div><h2>课程管理</h2><p>安排课程、教练和报名人数</p></div><button class="primary" id="addClass">＋ 添加课程</button></div><div class="class-cards"><div class="course-card course-blue"><span>瑜伽 · YOGA</span><h3>瑜伽基础</h3><p>每周一、三、五 09:00</p><div><b>李教练</b><small>12 / 20 人</small></div></div><div class="course-card course-purple"><span>力量 · POWER</span><h3>力量训练</h3><p>每周二、四 11:30</p><div><b>王教练</b><small>8 / 15 人</small></div></div><div class="course-card course-orange"><span>有氧 · CARDIO</span><h3>动感单车</h3><p>每天 14:00、19:00</p><div><b>张教练</b><small>18 / 20 人</small></div></div></div></div>
         <div id="checkinPage" class="page"><div class="page-head"><div><h2>签到记录</h2><p>记录会员每日到店情况</p></div><button class="primary" id="manualCheckin">＋ 手动签到</button></div><div class="checkin-cards"><div class="mini-card"><span>今日签到</span><b id="checkinBig">86</b><small>人次</small></div><div class="mini-card"><span>本周签到</span><b>542</b><small>人次</small></div><div class="mini-card"><span>平均到店</span><b>4.2</b><small>次 / 周</small></div></div><div class="panel table-panel"><div class="panel-head"><div><h3>今日签到明细</h3><p>最新签到记录会显示在这里</p></div></div><table><thead><tr><th>会员</th><th>签到时间</th><th>入场方式</th><th>状态</th></tr></thead><tbody id="checkinTable"></tbody></table></div></div>
-        <div id="financePage" class="page"><div class="page-head"><div><h2>收支统计</h2><p>查看健身房收入和经营情况</p></div><button class="outline">导出报表</button></div><div class="finance-grid"><div class="finance-box"><span>本月总收入</span><b>¥ 68,420</b><small class="positive">↑ 15.8% 较上月</small></div><div class="finance-box"><span>会员卡收入</span><b>¥ 52,800</b><small>占总收入 77.2%</small></div><div class="finance-box"><span>私教课程收入</span><b>¥ 15,620</b><small>占总收入 22.8%</small></div></div><div class="panel finance-note"><h3>本月经营提示</h3><p>会员卡续费率比上月提高 6.4%，可以继续通过课程体验和签到奖励维护会员活跃度。</p></div></div>
+        <div id="financePage" class="page"><div class="page-head"><div><h2>收支统计</h2><p>查看健身房收入和经营情况</p></div></div><div class="finance-grid"><div class="finance-box"><span>本月总收入</span><b>¥ 68,420</b><small class="positive">↑ 15.8% 较上月</small></div><div class="finance-box"><span>会员卡收入</span><b>¥ 52,800</b><small>占总收入 77.2%</small></div><div class="finance-box"><span>私教课程收入</span><b>¥ 15,620</b><small>占总收入 22.8%</small></div></div><div class="panel finance-note"><h3>本月经营提示</h3><p>会员卡续费率比上月提高 6.4%，可以继续通过课程体验和签到奖励维护会员活跃度。</p></div></div>
       </section>
     </main>
   </div>

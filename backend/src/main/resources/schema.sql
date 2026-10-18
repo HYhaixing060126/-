@@ -26,3 +26,11 @@ INSERT IGNORE INTO member(id,name,phone,card_type,expire_date,status) VALUES
  (1,'张小雨','13800001024','年卡','2025-06-24','正常'),(2,'李明远','13900002251','季卡','2026-07-02','即将到期');
 INSERT IGNORE INTO gym_class(id,name,coach,class_time,capacity,current_count) VALUES
  (1,'瑜伽基础','李教练','09:00',20,12),(2,'力量训练','王教练','11:30',15,8),(3,'动感单车','张教练','14:00',20,18);
+UPDATE sys_user SET real_name='管理员',role='超级管理员' WHERE username='admin';
+UPDATE sys_user SET real_name='普通会员',role='普通用户' WHERE username='member';
+UPDATE sys_user SET real_name='尊贵会员',role='VIP会员' WHERE username='vip';
+UPDATE member SET name='张小雨',phone='13800001024',card_type='年卡' WHERE id=1;
+UPDATE member SET name='李明远',phone='13900002251',card_type='季卡' WHERE id=2;
+UPDATE gym_class SET name='瑜伽基础',coach='李教练' WHERE id=1;
+UPDATE gym_class SET name='力量训练',coach='王教练' WHERE id=2;
+UPDATE gym_class SET name='动感单车',coach='张教练' WHERE id=3;
